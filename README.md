@@ -52,7 +52,7 @@ Postgres
 ./scripts/run-postgres.sh
 
 # Stop
-docker-compose -f docker/postgres-compose.yaml down
+docker-compose -f docker/docker-compose-local.yaml down
 ```
 
 Run the project

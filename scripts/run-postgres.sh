@@ -30,7 +30,7 @@ fi
         mkdir pgdata
     fi
 
-    docker-compose -f postgres-compose.yaml up -d
+    docker-compose -f docker-compose-local.yaml up -d
 )
 
 

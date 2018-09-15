@@ -164,13 +164,13 @@ Add a docker-compose file to start up a postgres container persisting data to a 
 
 See:
 
-* `docker/postgres-compose.sh`
+* `docker/docker-compose-local.sh`
 * `scripts/run-postgres.sh`
 
 Use these commands to:
 
 * Start: `./scripts/run-postgres.sh`
-* Stop : `docker-compose -f docker/postgres-compose.yaml down`
+* Stop : `docker-compose -f docker/docker-compose-local.yaml down`
 
 ### Setup Django to use postgres
 

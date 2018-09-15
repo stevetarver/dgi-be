@@ -67,6 +67,7 @@ Create a `requirements-dv.txt` and add some favorites:
 black
 coverage
 ipython
+mypy
 pylint
 pytest
 ```
@@ -91,6 +92,10 @@ Now you can pylint any file or directory with a right-click and External Tools -
 ### Setup coverage
 
 Add the default `.coveragerc` and tweek it a little.
+
+### Setup black
+
+See `pyproject.toml`
 
 ### Add common scripts
 

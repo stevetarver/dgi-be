@@ -1,6 +1,8 @@
 ## Create the project stub
 
-In the `dgi/be` directory:
+This section creates a boilerplate Django Rest Framework app with a dedicated virtual-env and some favorite tools and PyCharm integration - could be used for any DRF project.
+
+At repo root:
 
 ```sh
 # Install pyenv, if not already installed
@@ -44,23 +46,6 @@ Open the project in PyCharm and:
 1. Commit all files as an 'initial commit'
 
 At this point, the project is setup for editing in PyCharm and is runnable from `be/src` with `./manage.py runserver`.
-
-## Add ReST support
-
-```
-ᐅ pip install djangorestframework
-Collecting djangorestframework
-  Using cached https://files.pythonhosted.org/packages/90/30/ad1148098ff0c375df2a30cc4494ed953cf7551fc1ecec30fc951c712d20/djangorestframework-3.8.2-py2.py3-none-any.whl
-Installing collected packages: djangorestframework
-Successfully installed djangorestframework-3.8.2
-ᐅ pip freeze
-Django==2.1.1
-djangorestframework==3.8.2
-pytz==2018.5
-```
-
-* Add `djangorestframework==3.8.2` to constraints.txt
-* Add `djangorestframework` to requirements.txt
 
 ## Add Operational support
 
@@ -119,11 +104,39 @@ To update to the latest version of your hook repos, run `pre-commit autoupdate`.
 * `check-types.sh` - run `mypy` to check type annotations
 * `format.sh` - run `black` to format all files
 
+
+### Add DRF (ReST support)
+
+```
+ᐅ pip install djangorestframework
+Collecting djangorestframework
+  Using cached https://files.pythonhosted.org/packages/90/30/ad1148098ff0c375df2a30cc4494ed953cf7551fc1ecec30fc951c712d20/djangorestframework-3.8.2-py2.py3-none-any.whl
+Installing collected packages: djangorestframework
+Successfully installed djangorestframework-3.8.2
+ᐅ pip freeze
+Django==2.1.1
+djangorestframework==3.8.2
+pytz==2018.5
+```
+
+* Add `djangorestframework==3.8.2` to constraints.txt
+* Add `djangorestframework` to requirements.txt
+
+**NOTE**: we are only constraining the major frameworks instead of all dependencies. We could lock this down more tightly by `pip freeze > constraints.txt` after every install. In practice, if a framework updates a dependency without changing its version, it is an important bug fix that does not break backwards compatibility. Those changes haven't bit me yet, so I err on the liberal side.
+
+### Common commands
+
+* `pip install -r requirements-dv.txt`: Install all local dev dependencies.
+* `./scripts/pip-clean.sh`: Remove all python virtual-env installed dependencies to test prod/dv venv setup.
+* `pre-commit run --all-files`: pre-commit check - runs all validations so commits don't fail.
+
+
 At this point, we have a pretty workable project stub. There is more that could be added but it is largely project specific.
 
 Commit code.
 
 ## Create the first app (endpoint)
+
 
 
 ## TODO

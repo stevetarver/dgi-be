@@ -4,5 +4,6 @@ black
 coverage
 ipython
 mypy
+pre-commit
 pylint
 pytest

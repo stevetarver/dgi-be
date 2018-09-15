@@ -7,10 +7,15 @@ In the `dgi/be` directory:
 brew install pyenv
 brew install pyenv-virtualenv
 
-# Setup the virtual-env
+# Install our base python version - for use with pyenv virtual-envs
 pyenv install 3.7.0
-pyenv virtualenv 3.7.0 dgi-3.7.0
-echo dgi-3.7.0 > .python-version
+
+# You MUST create the virtual-env specifying the python version to avoid
+# 'command not found' errors when running some external tools.
+pyenv virtualenv --python=python3.7 3.7.0 dgi-3.7.0
+
+# Create .python-version which automatically activates this venv on dir entry
+pyenv local dgi-3.7.0
 
 # Install Django
 pip install --upgrade pip
@@ -68,6 +73,7 @@ black
 coverage
 ipython
 mypy
+pre-commit
 pylint
 pytest
 ```
@@ -97,18 +103,27 @@ Add the default `.coveragerc` and tweek it a little.
 
 See `pyproject.toml`
 
+### Setup pre-commit
+
+See `.pre-commit-config.yaml` installed at repo root.
+
+Run `pre-commit run --all-files` to test your configuration.
+
+Run `pre-commit install` to install pre-commit into your git hooks. pre-commit will now run on every commit.
+
+To update to the latest version of your hook repos, run `pre-commit autoupdate`.
+
 ### Add common scripts
 
 * `pip-clean.sh` - remove all dependencies for testing pip install.
 * `check-types.sh` - run `mypy` to check type annotations
 * `format.sh` - run `black` to format all files
 
-At this point, we have a pretty workable project stub. There is more that could be added but it is largely project specific. 
+At this point, we have a pretty workable project stub. There is more that could be added but it is largely project specific.
 
 Commit code.
 
 ## Create the first app (endpoint)
-
 
 
 ## TODO

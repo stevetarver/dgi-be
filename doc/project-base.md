@@ -124,35 +124,89 @@ pytz==2018.5
 
 **NOTE**: we are only constraining the major frameworks instead of all dependencies. We could lock this down more tightly by `pip freeze > constraints.txt` after every install. In practice, if a framework updates a dependency without changing its version, it is an important bug fix that does not break backwards compatibility. Those changes haven't bit me yet, so I err on the liberal side.
 
+In `src/project/settings.py`:
+
+Add to `INSTALLED_APPS`: "rest_framework"
+
+Add DRF config:
+
+```
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
+```
+
+**TODO**: Since we are only using Django for DRF, we should probably strip out all the additional functionality for templates, etc. Since our app is not performance sensitive, we will leave that as a prod tuning effort.
+
 ### Common commands
 
 * `pip install -r requirements-dv.txt`: Install all local dev dependencies.
 * `./scripts/pip-clean.sh`: Remove all python virtual-env installed dependencies to test prod/dv venv setup.
 * `pre-commit run --all-files`: pre-commit check - runs all validations so commits don't fail.
 
-
 At this point, we have a pretty workable project stub. There is more that could be added but it is largely project specific.
 
 Commit code.
 
-## Create the first app (endpoint)
+## Add postgres backend
+
+### Add postgres db with docker support
+
+Add a docker-compose file to start up a postgres container persisting data to a local dir for development use.
+
+See:
+
+* `docker/postgres-compose.sh`
+* `scripts/run-postgres.sh`
+
+Use these commands to:
+
+* Start: `./scripts/run-postgres.sh`
+* Stop : `docker-compose -f docker/postgres-compose.yaml down`
+
+### Setup Django to use postgres
+
+Install Django's postgres support dependency:
+
+```
+pip install psycopg2
+ᐅ pip freeze
+# ...
+psycopg2==2.7.5
+# ...
+```
+
+* Add `psycopg2` to `requirements.txt`
+* Add `psycopg2==2.7.5` to `constraints.txt`
+
+In `src/project/settings.py`, replace the `db.sqlite3` DATABASES definition with:
+
+```
+URL_WATCHER_DATASTORE_IP = os.getenv('URL_WATCHER_DATASTORE_IP', '127.0.0.1')
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'dgi',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': URL_WATCHER_DATASTORE_IP,
+        'PORT': '5432',
+    }
+}
+```
+
+You can run `./manage.py runserver` to ensure the project comes up cleanly.
+
+Run `./manage.py migrate` to prove connectivity to the database.
 
 
 
-## TODO
-
-* Add a docker postgres that persists data to a local data dir
-* Figure out a basic stock schema
-* Define the basic stock model
-* Run migrations
-* Add celery
-* Figure out a financial vehicle source
-* Add a celery task to identify dividend yielding stocks
-* Run the task to seed the database
-* Figure out a schema for dividend historical data
-* Create a celery task to gather that data for each stock
-* Define ReST operations to present that data to fe
-* Figure out how to display that data in a meaningful way - start the vue fe
-* Figure out how to value dgi stocks
-* Figure out how to display best values
 

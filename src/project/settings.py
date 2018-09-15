@@ -23,10 +23,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "u1zj@rc7trf9v^67@8vmhbdn%t##+iunk-7qr6pm7-fxr$ma+l"
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# TODO: SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = List[str]
+# TODO: SECURITY WARNING: limit host access appropriate to prod env
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
@@ -70,14 +72,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "project.wsgi.application"
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
+# TODO: create dedicated user and automate db setup
+URL_WATCHER_DATASTORE_IP = os.getenv("URL_WATCHER_DATASTORE_IP", "127.0.0.1")
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, "db.sqlite3"),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": "dgi",
+        "USER": "postgres",
+        "PASSWORD": "postgres",
+        "HOST": URL_WATCHER_DATASTORE_IP,
+        "PORT": "5432",
     }
 }
 
@@ -113,3 +120,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = "/static/"
+
+# Django Rest Framework config
+# http://www.django-rest-framework.org/
+# http://www.django-rest-framework.org/tutorial/quickstart/
+# http://www.django-rest-framework.org/api-guide/authentication/
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
+}

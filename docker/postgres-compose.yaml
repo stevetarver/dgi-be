@@ -1,0 +1,21 @@
+# Start only the postgres container - for local development
+# See https://hub.docker.com/_/postgres/
+#
+# Start: ./scripts/run-postgres.sh
+# Stop:  docker-compose -f docker/postgres-compose.yaml down
+#
+version: '3'
+
+services:
+  db:
+    image: postgres:10.4-alpine
+    container_name: dgi_db
+    restart: always
+    environment:
+    - POSTGRES_DB=dgi
+    - POSTGRES_USER=postgres
+    - POSTGRES_PASSWORD=postgres
+    volumes:
+    - ./pgdata:/var/lib/postgresql/data
+    ports:
+    - 5432:5432

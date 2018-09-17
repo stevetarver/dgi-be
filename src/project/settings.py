@@ -17,6 +17,14 @@ from typing import List
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# TODO: We should have this entered in the webpage
+ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY", "")
+if len(ALPHA_VANTAGE_API_KEY):
+    print(
+        "You must provide an ALPHA_VANTAGE_API_KEY to gather stock "
+        "data. Cannot continue, exiting"
+    )
+    # exit(2)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -41,6 +49,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "stocks",
 ]
 
 MIDDLEWARE = [

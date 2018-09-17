@@ -1,0 +1,16 @@
+{% extends 'stocks/layout.html' %}
+
+{% block content %}
+
+<ul class="collection">
+  {% for stock in stocks %}
+  <li class="collection-item">
+    pk={{stock.pk}},
+    changed={{stock.changed}},
+    period={{stock.period}},
+    url={{stock.url}}
+  </li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
